@@ -1,4 +1,4 @@
-const deepEqual = require('deep-equal');
+const deepEqual = require('fast-deep-equal');
 
 interface PromiseCache {
   promise?: Promise<void>;

@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-promise-suspense": "^0.2.1",
     "react-scripts": "2.1.8"
   },
   "scripts": {

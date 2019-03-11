@@ -1,11 +1,15 @@
 declare const deepEqual: any;
 
 interface PromiseCache {
-    promise?: Promise<void>;
-    error?: any;
-    inputs: Array<any>;
-    response?: any;
+  promise?: Promise<void>;
+  error?: any;
+  inputs: Array<any>;
+  response?: any;
 }
 
 declare const PromiseCaches: PromiseCache[];
-declare const usePromise: (input: RequestInfo, init?: RequestInit | undefined, lifespan?: number) => any;
+declare const usePromise: (
+  promise: (...inputs: any) => any,
+  inputs: Array<any>,
+  lifespan?: numbers,
+) => any;
