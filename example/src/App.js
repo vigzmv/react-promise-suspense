@@ -9,8 +9,6 @@ const MyFetchingComponent = () => {
     { method: 'GET' },
   ]);
 
-
-  console.log(data);
   return <pre>{JSON.stringify(data, null, 2)}</pre>;
 };
 
