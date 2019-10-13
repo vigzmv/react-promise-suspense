@@ -15,7 +15,7 @@ Inspired by [fetch-suspense](https://github.com/CharlesStover/fetch-suspense), b
 
 ## Example
 
-See [example](./example)
+Here's an [Codesandbox example](https://codesandbox.io/s/react-promise-suspense-example-t14mh) of a setTimeout delayed component:
 
 ```js
 import usePromise from 'react-promise-suspense';
