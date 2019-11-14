@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import usePromise from '../../';
+import usePromise from 'react-promise-suspense';
 
 const fetchJson = input => fetch(input).then(res => console.log(res) || res.json());
 
