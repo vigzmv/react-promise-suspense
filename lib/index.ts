@@ -52,4 +52,4 @@ const usePromise = (promise: (...inputs: any) => any, inputs: Array<any>, lifesp
   throw promiseCache.promise;
 };
 
-module.exports = usePromise;
+export = usePromise;
