@@ -4,3 +4,4 @@
 /.travis.yml
 /tsconfig.json
 /lib/index.ts
+/example
