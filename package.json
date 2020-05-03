@@ -1,6 +1,6 @@
 {
   "name": "react-promise-suspense",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "React hook for resolving promises with Suspense support",
   "main": "build/index.js",
   "repository": {
