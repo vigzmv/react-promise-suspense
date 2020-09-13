@@ -21,7 +21,7 @@ Inspired by [fetch-suspense](https://github.com/CharlesStover/fetch-suspense), b
 ```js
 import usePromise from 'react-promise-suspense';
 
-const fetchJson = input => fetch(input).then(res => console.log(res) || res.json());
+const fetchJson = input => fetch(input).then(res => res.json());
 
 const MyFetchingComponent = () => {
   // usePromise(Promise, [inputs,],)
