@@ -9,7 +9,7 @@ interface PromiseCache {
 
 const promiseCaches: PromiseCache[] = [];
 
-const usePromise = (promise: (...inputs: any) => any, inputs: Array<any>, lifespan: number = 0) => {
+const usePromise = (promise: (...inputs: any) => any, inputs: Array<any> = [], lifespan: number = 0) => {
   for (const promiseCache of promiseCaches) {
     if (deepEqual(inputs, promiseCache.inputs)) {
       // If an error occurred,
