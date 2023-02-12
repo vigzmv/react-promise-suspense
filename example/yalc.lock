@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "react-promise-suspense": {
+      "signature": "34e72f37b902a1476478d24797c8c523",
+      "file": true
+    }
+  }
+}
