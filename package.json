@@ -44,7 +44,13 @@
     "format": "biome format --write .",
     "package:check": "npm pack --dry-run",
     "prepublishOnly": "npm run build",
-    "test": "exit 0"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:types": "npm run build && tsd",
+    "coverage": "vitest run --coverage"
+  },
+  "tsd": {
+    "directory": "lib"
   },
   "peerDependencies": {
     "react": ">=16.6.0"
@@ -54,7 +60,10 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
-    "@types/node": "^18.13.0",
-    "typescript": "^4.9.5"
+    "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^4.1.7",
+    "tsd": "^0.33.0",
+    "typescript": "^4.9.5",
+    "vitest": "^4.1.7"
   }
 }
