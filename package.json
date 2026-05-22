@@ -2,11 +2,6 @@
   "name": "react-promise-suspense",
   "version": "0.3.4",
   "description": "React hook for resolving promises with Suspense support",
-  "main": "build/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vigzmv/react-promise-suspense.git"
-  },
   "keywords": [
     "react",
     "fetch",
@@ -14,23 +9,48 @@
     "promise",
     "hooks"
   ],
-  "author": "Vignesh M <vigzmv@outlook.com",
-  "license": "MIT",
+  "homepage": "https://github.com/vigzmv/react-promise-suspense#readme",
   "bugs": {
     "url": "https://github.com/vigzmv/react-promise-suspense/issues"
   },
-  "homepage": "https://github.com/vigzmv/react-promise-suspense#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vigzmv/react-promise-suspense.git"
+  },
+  "license": "MIT",
+  "author": "Vignesh M <vigzmv@outlook.com>",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/vigzmv"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
     "build": "tsc --outDir build",
     "dev": "tsc --outDir build --watch",
+    "typecheck": "tsc --noEmit",
+    "package:check": "npm pack --dry-run",
     "prepublishOnly": "npm run build",
     "test": "exit 0"
+  },
+  "peerDependencies": {
+    "react": ">=16.6.0"
+  },
+  "dependencies": {
+    "fast-deep-equal": "^2.0.1"
   },
   "devDependencies": {
     "@types/node": "^18.13.0",
     "typescript": "^4.9.5"
-  },
-  "dependencies": {
-    "fast-deep-equal": "^2.0.1"
   }
 }
