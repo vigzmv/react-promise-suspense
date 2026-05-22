@@ -27,7 +27,7 @@
   "types": "build/index.d.ts",
   "files": [
     "build",
-    "lib",
+    "lib/index.ts",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
