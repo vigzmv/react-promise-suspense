@@ -40,6 +40,8 @@
     "build": "tsc --outDir build",
     "dev": "tsc --outDir build --watch",
     "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome format --write .",
     "package:check": "npm pack --dry-run",
     "prepublishOnly": "npm run build",
     "test": "exit 0"
@@ -51,6 +53,7 @@
     "fast-deep-equal": "^2.0.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.15",
     "@types/node": "^18.13.0",
     "typescript": "^4.9.5"
   }

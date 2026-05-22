@@ -3,7 +3,7 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "lib": [ "dom", "es2018" ],
+    "lib": ["dom", "es2018"],
     "module": "commonjs",
     "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
@@ -19,5 +19,5 @@
     "strictPropertyInitialization": true,
     "target": "es2018"
   },
-  "files": [ "lib/index.ts" ]
+  "files": ["lib/index.ts"]
 }

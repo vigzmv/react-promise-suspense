@@ -12,7 +12,7 @@ const promiseCaches: PromiseCache[] = [];
 const usePromise = <Args extends any[], Result>(
   promise: (...inputs: Args) => Promise<Result>,
   inputs: Args,
-  lifespan: number = 0
+  lifespan: number = 0,
 ): Result => {
   // Cache Check
   for (const promiseCache of promiseCaches) {
