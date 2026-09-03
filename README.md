@@ -158,6 +158,12 @@ npm run lint       # biome
 npm run build
 ```
 
+### Releasing
+
+Bump `version` in `package.json`, add the entry to `CHANGELOG.md`, and push a
+matching `vX.Y.Z` tag. The [release workflow](./.github/workflows/release.yml)
+runs the tests and publishes to npm with provenance via trusted publishing.
+
 ## Funding
 
 If this package is useful to you, consider [sponsoring](https://github.com/sponsors/vigzmv).
