@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    // vitest's types are `exports`-mapped, which node10 resolution cannot read.
+    "module": "preserve",
+    "moduleResolution": "bundler"
+  },
+  "files": [],
+  "include": ["lib/**/*.test.ts"]
+}

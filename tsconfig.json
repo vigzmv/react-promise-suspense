@@ -1,22 +1,18 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "downlevelIteration": true,
-    "lib": [ "dom", "es5", "es2015.promise", "scripthost" ],
+    "declarationMap": true,
+    "sourceMap": true,
+    "lib": ["dom", "es2018"],
     "module": "commonjs",
     "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": ".",
-    "removeComments": true,
+    "outDir": "build",
     "strict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "target": "es5"
+    "target": "es2018"
   },
-  "files": [ "lib/index.ts" ]
+  "files": ["lib/index.ts"]
 }

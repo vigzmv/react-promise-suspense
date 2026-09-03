@@ -1,7 +1,0 @@
-/node_modules
-/.gitignore
-/.npmignore
-/.travis.yml
-/tsconfig.json
-/lib/index.ts
-/example
