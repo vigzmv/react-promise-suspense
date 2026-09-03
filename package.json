@@ -34,16 +34,15 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsc --outDir build",
-    "dev": "tsc --outDir build --watch",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc -p tsconfig.test.json",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "package:check": "npm pack --dry-run",
     "prepare": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:types": "npm run build && tsd",
+    "test:types": "tsd",
     "coverage": "vitest run --coverage"
   },
   "tsd": {

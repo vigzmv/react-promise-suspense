@@ -7,16 +7,11 @@
     "module": "commonjs",
     "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
-    "removeComments": false,
     "strict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
     "target": "es2018"
   },
   "files": ["lib/index.ts"]

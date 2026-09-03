@@ -152,8 +152,8 @@ Node 22 is used for development (see `.nvmrc`). `npm install` also builds the pa
 ```bash
 npm install
 npm test           # vitest
-npm run test:types # tsd
-npm run typecheck  # tsc, including the test suite
+npm run test:types # tsd, against the built declarations
+npm run typecheck  # tsc over source and tests
 npm run lint       # biome
 npm run build
 ```

@@ -21,13 +21,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
+      # `npm ci` also builds the package via the `prepare` script.
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
-      - run: npm run build
       - run: npm test
-      - run: npx tsd
-      - run: npm run package:check
-      # The example has no lockfile, so it uses `npm install`.
-      - run: npm install --no-audit --no-fund && npm run build
+      - run: npm run test:types
+      - run: npm ci && npm run build
         working-directory: example

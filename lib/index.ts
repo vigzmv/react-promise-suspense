@@ -39,16 +39,13 @@ const promiseCaches: PromiseCache[] = [];
  */
 const usePromise = <Args extends unknown[], Result>(
   promise: (...inputs: Args) => Promise<Result>,
-  // A zero-argument promise function may omit `inputs`, or pass any array to
-  // serve purely as the cache key (e.g. values a closure depends on).
+  // Conditional so that a zero-argument function may omit `inputs` (or pass any
+  // array as a pure cache key) while functions with parameters must supply them.
   ...rest: Args extends []
     ? [inputs?: unknown[], lifespan?: number]
     : [inputs: Args, lifespan?: number]
 ): Result => {
-  const [inputs = [] as unknown as Args, lifespan = 0] = rest as [
-    inputs?: Args,
-    lifespan?: number,
-  ];
+  const [inputs = [], lifespan = 0] = rest as [unknown[]?, number?];
   const cacheKey = promise.toString();
 
   // Cache check
@@ -57,13 +54,11 @@ const usePromise = <Args extends unknown[], Result>(
       cacheKey === promiseCache.cacheKey &&
       deepEqual(inputs, promiseCache.inputs)
     ) {
-      // If an error occurred,
-      if (Object.prototype.hasOwnProperty.call(promiseCache, "error")) {
+      // Key presence rather than truthiness: a promise may settle with undefined.
+      if ("error" in promiseCache) {
         throw promiseCache.error;
       }
-
-      // If a response was successful,
-      else if (Object.prototype.hasOwnProperty.call(promiseCache, "response")) {
+      if ("response" in promiseCache) {
         return promiseCache.response as Result;
       }
       throw promiseCache.promise;
@@ -76,8 +71,8 @@ const usePromise = <Args extends unknown[], Result>(
     inputs,
     promise:
       // Make the promise request.
-      promise(...inputs)
-        .then((response: Result) => {
+      promise(...(inputs as Args))
+        .then((response) => {
           promiseCache.response = response;
         })
         .catch((e: unknown) => {
