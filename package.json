@@ -33,17 +33,14 @@
     "CHANGELOG.md"
   ],
   "sideEffects": false,
-  "engines": {
-    "node": ">=20.19"
-  },
   "scripts": {
     "build": "tsc --outDir build",
     "dev": "tsc --outDir build --watch",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json",
     "lint": "biome check .",
     "format": "biome format --write .",
     "package:check": "npm pack --dry-run",
-    "prepublishOnly": "npm run build",
+    "prepare": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:types": "npm run build && tsd",
@@ -63,7 +60,7 @@
     "@types/node": "^22.0.0",
     "@vitest/coverage-v8": "^4.1.7",
     "tsd": "^0.33.0",
-    "typescript": "^4.9.5",
+    "typescript": "^5.9.3",
     "vitest": "^4.1.7"
   }
 }
