@@ -6,8 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false,
-    "includes": ["lib/**", "*.json"]
+    "ignoreUnknown": true
   },
   "formatter": {
     "enabled": true,

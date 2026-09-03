@@ -5,6 +5,9 @@ on:
     branches: [master]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,7 +24,10 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
-      - run: npm run test
       - run: npm run build
+      - run: npm test
       - run: npx tsd
       - run: npm run package:check
+      # The example has no lockfile, so it uses `npm install`.
+      - run: npm install --no-audit --no-fund && npm run build
+        working-directory: example
