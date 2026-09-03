@@ -3,17 +3,8 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
-  // react-promise-suspense is linked via `file:..`, so it lives outside
-  // node_modules. Force Vite to pre-bundle it and run the CommonJS interop so
-  // `import usePromise from ...` resolves the `module.exports = usePromise`
-  // default. Consumers installing from npm get this for free.
-  optimizeDeps: {
-    include: ["react-promise-suspense"],
-  },
-  build: {
-    commonjsOptions: {
-      include: [/react-promise-suspense/, /node_modules/],
-      defaultIsModuleExports: true,
-    },
-  },
+  // react-promise-suspense is linked via `file:..`. Keeping the symlinked
+  // node_modules path lets Vite apply its normal dependency handling
+  // (pre-bundling and CommonJS interop) instead of treating it as app source.
+  resolve: { preserveSymlinks: true },
 });

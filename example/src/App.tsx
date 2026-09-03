@@ -24,17 +24,22 @@ function PokemonCard({ name }: { name: string }) {
 
 class ErrorBoundary extends Component<
   { children: ReactNode },
-  { error: Error | null }
+  { hasError: boolean; message: string }
 > {
-  state = { error: null as Error | null };
+  state = { hasError: false, message: "" };
 
-  static getDerivedStateFromError(error: Error) {
-    return { error };
+  // Track a flag rather than the error itself: a promise can reject with a
+  // falsy value such as `undefined`, which a truthiness check would miss.
+  static getDerivedStateFromError(error: unknown) {
+    return {
+      hasError: true,
+      message: error instanceof Error ? error.message : String(error),
+    };
   }
 
   render() {
-    if (this.state.error) {
-      return <p>Something went wrong: {this.state.error.message}</p>;
+    if (this.state.hasError) {
+      return <p>Something went wrong: {this.state.message}</p>;
     }
     return this.props.children;
   }
