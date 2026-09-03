@@ -58,7 +58,7 @@ A runnable Vite app lives in [`example/`](./example).
 ```ts
 usePromise<Args extends unknown[], Result>(
   promise: (...inputs: Args) => Promise<Result>,
-  inputs?: Args,
+  inputs: Args,
   lifespan?: number,
 ): Result
 ```
@@ -69,22 +69,33 @@ The return type is inferred from the promise's resolved value, and `inputs` is t
 const getUser = (id: number): Promise<User> => api.get(`/users/${id}`);
 const user = usePromise(getUser, [1]); // user: User
 usePromise(getUser, ["1"]); // type error: string is not number
+usePromise(getUser); // type error: inputs are required
 ```
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `promise` | `(...inputs) => Promise<Result>` | — | The promise-returning function. |
-| `inputs` | `Args` | `[]` | Arguments applied to `promise`; also the cache key. |
-| `lifespan` | `number` | `0` | Milliseconds to keep the cached result. `0` keeps it for the session. |
+| `inputs` | `Args` | `[]` | Arguments applied to `promise`; also the cache key. May be omitted only when `promise` takes no arguments, in which case any array is accepted and serves purely as the cache key. |
+| `lifespan` | `number` | `0` | Milliseconds to keep the cached result after it settles. `0` keeps it for the session. |
 
 ## Caching behaviour
 
 Results are cached in a module-level store. A cache entry is matched when **both**:
 
-1. the promise function's source (`promise.toString()`) is identical, and
-2. `inputs` are deeply equal (via [`fast-deep-equal`](https://github.com/epoberezkin/fast-deep-equal)).
+1. the promise function's **source text** (`promise.toString()`) is identical, and
+2. `inputs` are deeply equal (via the `es6` build of [`fast-deep-equal`](https://github.com/epoberezkin/fast-deep-equal), which also compares `Map`, `Set` and typed-array contents).
 
-This means two *different* functions called with equal inputs no longer collide — fixed in 0.4.0 ([#8](https://github.com/vigzmv/react-promise-suspense/issues/8)).
+Two *different* functions called with equal inputs therefore do not collide — fixed in 0.4.0 ([#8](https://github.com/vigzmv/react-promise-suspense/issues/8)). Keying on source text has consequences worth knowing:
+
+- **Closures with identical source share an entry.** `usePromise(() => fetchUser(id), [])` in two components fetches once and shows the same user in both. Put every value the function closes over in `inputs`, or pass it as an argument:
+
+  ```tsx
+  usePromise(() => fetchUser(id), [id]); // inputs act as the cache key
+  usePromise(fetchUser, [id]);           // or let inputs be the arguments
+  ```
+
+- **Objects without enumerable own properties compare equal.** `Request`, `Headers`, `FormData` and class instances with a custom `toString` or `valueOf` are not told apart. Use plain data in `inputs`.
+- **Treat `inputs` as immutable**, like a dependency array. The cache keeps a reference to them, so mutating them later changes the stored key.
 
 Because the cache is a module-level singleton, it is shared across every component in the same JS context. Set `lifespan` to evict an entry some milliseconds after it settles:
 
@@ -93,11 +104,15 @@ Because the cache is a module-level singleton, it is shared across every compone
 const data = usePromise(fetchPokemon, [name], 5000);
 ```
 
+The lifespan is fixed by the call that creates the entry; later calls with the same key reuse the entry and its timer. Values above `2^31 - 1` ms (about 24.8 days) are treated as `0`.
+
 ## Error handling
 
-If the promise rejects, `usePromise` caches the error and re-throws it on the next render so the nearest [error boundary](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) can catch it:
+If the promise rejects, `usePromise` caches the rejection and re-throws it on every render for that key, so the nearest [error boundary](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) can catch it. The example below uses [`react-error-boundary`](https://github.com/bvaughn/react-error-boundary); the [`example/`](./example) app shows a hand-written boundary.
 
 ```tsx
+import { ErrorBoundary } from "react-error-boundary";
+
 <ErrorBoundary fallback={<p>Failed to load.</p>}>
   <Suspense fallback="Loading…">
     <Pokemon name="ditto" />
@@ -105,9 +120,11 @@ If the promise rejects, `usePromise` caches the error and re-throws it on the ne
 </ErrorBoundary>
 ```
 
+A cached rejection persists like a result. To let an error boundary retry, give the call a `lifespan` so the entry is evicted.
+
 ## Server-side rendering
 
-The cache is a module-level singleton, so it is **not safe to share across requests** on a Node server — one request's data can leak into another's, and entries are never request-scoped. Treat `usePromise` as a client-side tool, or isolate per-request caching yourself until [scoped caches land](#roadmap-to-12).
+The cache is a module-level singleton, so it is **not safe to share across requests** on a Node server — one request's data can leak into another's, and entries are never request-scoped. Treat `usePromise` as a client-side tool, or isolate per-request caching yourself until [scoped caches land](#roadmap).
 
 ## When to use what
 
@@ -117,23 +134,27 @@ The cache is a module-level singleton, so it is **not safe to share across reque
 | A full data layer (refetch, mutations, devtools, dedup) | [TanStack Query](https://tanstack.com/query) or [SWR](https://swr.vercel.app) |
 | A tiny, framework-agnostic Suspense cache for any promise | `react-promise-suspense` |
 
-## Roadmap to 1.2
+## Roadmap
 
 The next major release makes the cache controllable:
 
 - A first-class cache object with `delete`, `clear`, and `size` ([#10](https://github.com/vigzmv/react-promise-suspense/issues/10)).
 - Configurable, bounded (LRU) cache size ([#9](https://github.com/vigzmv/react-promise-suspense/issues/9)).
 - A custom equality function ([#16](https://github.com/vigzmv/react-promise-suspense/issues/16)).
+- An explicit cache key option, so closures no longer depend on source text.
 - `createPromiseCache()` for isolated, per-scope caches.
 - An options object: `usePromise(fn, inputs, { cache, cacheKey, lifespan })`.
 
 ## Contributing
 
+Node 22 is used for development (see `.nvmrc`). `npm install` also builds the package.
+
 ```bash
 npm install
-npm test          # vitest
+npm test           # vitest
 npm run test:types # tsd
-npm run lint      # biome
+npm run typecheck  # tsc, including the test suite
+npm run lint       # biome
 npm run build
 ```
 
